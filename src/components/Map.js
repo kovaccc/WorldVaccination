@@ -39,78 +39,81 @@ const Map = ({parentSelectedCountryCallback}) => {
 
       
         g.selectAll("path")
-            .classed("active", centered && function (d) { return d === centered; })
-            .call(function(){ parentSelectedCountryCallback(countryNames[d.id])})
+            .classed("active", centered && function (d) { return d === centered; });
 
         g.transition()
             .duration(750)
             .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
             .style("stroke-width", 1.5 / k + "px");
 
+        parentSelectedCountryCallback(countryNames[d.id])
+
     }
 
 
     useEffect(() => {
 
-        var svg = select(svgRef.current);
-        var tooltip = select(tooltipRef.current);
-
-        svg.append("rect")
-            .attr("id", "mapBackground")
-            .attr("width", width)
-            .attr("height", height)
-            .on("click", clicked);
-
-        var g = svg.append('g').attr("id", "mapGroup");
-
-
-        Promise.all([
-            d3.json("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-110m.json"),
-            d3.tsv("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-country-names.tsv"),
-        ]).then(([world, names]) => {
-
-            var countries = topojson.feature(world, world.objects.countries).features;
-
-            // neighbors = topojson.neighbors(world.objects.countries.geometries);
-
-            //map country names to IDs used on map
-            names.forEach(function (i) {
-                countryNames[i.id] = i.name;
-            });
-
-            g.append("g")
-                .attr("class", "country")
-                .selectAll(".country")
-                .data(countries)
-                .enter().append('path')
-                .attr("d", path)
-                .attr("id", function (d) { return d.id; })
-                .on('click', function (e, d) {
-                    console.log(countryNames[d.id]);
-                    clicked(d);
-                }).on("mouseover", function (e, d) {
-                    d3.select(this).attr("fill", "grey").attr("stroke-width", 2);
-                    return tooltip.classed("hidden", false).html(countryNames[d.id]);
-                })
-                .on("mousemove", function (e, d) {
-                    tooltip.classed("hidden", false)
-                        .style("top", (e.y) + "px")
-                        .style("left", (e.x + 10) + "px")
-                        .html(countryNames[d.id]);
-                })
-                .on("mouseout", function (d, i) {
-                    d3.select(this).attr("fill", "#aaa").attr("stroke-width", 1);
-                    tooltip.classed("hidden", true);
+            var svg = select(svgRef.current);
+            var tooltip = select(tooltipRef.current);
+    
+            svg.append("rect")
+                .attr("id", "mapBackground")
+                .attr("width", width)
+                .attr("height", height)
+                .on("click", clicked);
+    
+            var g = svg.append('g').attr("id", "mapGroup");
+    
+    
+            Promise.all([
+                d3.json("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-110m.json"),
+                d3.tsv("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-country-names.tsv"),
+            ]).then(([world, names]) => {
+    
+                var countries = topojson.feature(world, world.objects.countries).features;
+    
+                // neighbors = topojson.neighbors(world.objects.countries.geometries);
+    
+                //map country names to IDs used on map
+                names.forEach(function (i) {
+                    countryNames[i.id] = i.name;
                 });
+    
+                g.append("g")
+                    .attr("class", "country")
+                    .selectAll(".country")
+                    .data(countries)
+                    .enter().append('path')
+                    .attr("d", path)
+                    .attr("id", function (d) { return d.id; })
+                    .on('click', function (e, d) {
+                        console.log(countryNames[d.id]);
+                        clicked(d);
+                    }).on("mouseover", function (e, d) {
+                        d3.select(this).attr("fill", "grey").attr("stroke-width", 2);
+                        return tooltip.classed("hidden", false).html(countryNames[d.id]);
+                    })
+                    .on("mousemove", function (e, d) {
+                        tooltip.classed("hidden", false)
+                            .style("top", (e.y) + "px")
+                            .style("left", (e.x + 10) + "px")
+                            .html(countryNames[d.id]);
+                    })
+                    .on("mouseout", function (d, i) {
+                        d3.select(this).attr("fill", "#aaa").attr("stroke-width", 1);
+                        tooltip.classed("hidden", true);
+                    });
+    
+                g.append("path")
+                    .datum(topojson.mesh(world, world.objects.countries, function (a, b) { return a !== b; }))
+                    .attr("id", "country-borders")
+                    .attr("d", path);
+    
+                
+    
+            }).catch(err => console.log('Error loading or parsing data.'))
 
-            g.append("path")
-                .datum(topojson.mesh(world, world.objects.countries, function (a, b) { return a !== b; }))
-                .attr("id", "country-borders")
-                .attr("d", path);
-
-        }).catch(err => console.log('Error loading or parsing data.'))
-
-    });
+    }, []);
 
     return (
         <div className="mapContainer">

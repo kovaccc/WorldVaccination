@@ -2,19 +2,28 @@ import React, { Component, useRef, useEffect, useState } from "react";
 import "./App.css";
 import Map from './components/Map';
 import VaccinationData from './components/VaccinationData'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import * as Constants from './utils/Constants';
 
 
 function App() {
 
-  var countryData = [];
+  const [currentCountry, setCurrentCountry] = useState();
+  const [currentDate, setStartDate] = useState(new Date());
+  var vaccinationData = []
 
   const handleCountrySelectedCallback = (country) => {
     console.log("country is", country)
+    setCurrentCountry(country)
+
+    // todo check if country is undefined then dont draw barchart 
+
   }
 
   const handleCountryDataCallback = (data) => {
-    countryData = data;
-    console.log("country is", countryData[0].data); // access first element in first row 
+    vaccinationData = data;
+    console.log("data is ", vaccinationData[0].data[0]); // access first element in first row 
   }
 
 
@@ -23,8 +32,9 @@ function App() {
       <div className="content">
         <Map parentSelectedCountryCallback={handleCountrySelectedCallback}></Map>
         <VaccinationData parentCountryDataCallback={handleCountryDataCallback}></VaccinationData>
-        <div id="chart"></div>
+        <DatePicker selected={currentDate} onChange={(date) => setStartDate(date)} />
       </div>
+      <div id="chart"></div>
     </div>
   );
 }

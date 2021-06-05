@@ -18,7 +18,7 @@ const VaccinationData = ({parentCountryDataCallback}) => {
                 parentCountryDataCallback(vaccinationData)
             }
         });
-    });
+    }, []);
 
     return (
         <div></div>
