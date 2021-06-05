@@ -3,10 +3,11 @@ import { select, geoPath, geoMercator, min, max, scaleLinear } from "d3";
 import * as d3 from "d3";
 import * as topojson from "topojson";
 
-const Map = () => {
+const Map = ({parentSelectedCountryCallback}) => {
 
     const svgRef = useRef();
     const tooltipRef = useRef();
+    var countryNames = [];
 
     const width = 1000;
     const height = 900;
@@ -36,9 +37,10 @@ const Map = () => {
             centered = null;
         }
 
-
+      
         g.selectAll("path")
-            .classed("active", centered && function (d) { return d === centered; });
+            .classed("active", centered && function (d) { return d === centered; })
+            .call(function(){ parentSelectedCountryCallback(countryNames[d.id])})
 
         g.transition()
             .duration(750)
@@ -64,7 +66,7 @@ const Map = () => {
 
         Promise.all([
             d3.json("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-110m.json"),
-            d3.tsv("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-country-names.tsv")
+            d3.tsv("https://cdn.rawgit.com/mbostock/4090846/raw/d534aba169207548a8a3d670c9c2cc719ff05c47/world-country-names.tsv"),
         ]).then(([world, names]) => {
 
             var countries = topojson.feature(world, world.objects.countries).features;
@@ -72,7 +74,6 @@ const Map = () => {
             // neighbors = topojson.neighbors(world.objects.countries.geometries);
 
             //map country names to IDs used on map
-            var countryNames = [];
             names.forEach(function (i) {
                 countryNames[i.id] = i.name;
             });
