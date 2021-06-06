@@ -1,11 +1,79 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 
+/* .appContent {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+} */
+
+
+/* app text */
+
+body {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 4.5em;
+  line-height: 82px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.135em;
+}
+
+
+
+/* date-picker */
+
+
+.date-picker {
+  cursor: pointer;
+  padding: 26px 24px;
+  background: #FFE145;
+  border-radius: 4px;
+  border: 0;
+  color: #B79C10;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.125em;
+  line-height: 1.125em;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.date-picker:hover {
+  padding: 26px 24px;
+  background: #FFF7CC;
+  border-radius: 4px;
+  border: 0;
+  color: #B79C10;
+  font-family: Roboto, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.125em;
+  line-height: 1.125em;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+
+
+
+
+
 
 /* world map */
-.content {
-  max-width: 1000px;
-}
+
 .worldMap {
   float: left;
   background-color: #2B65EC;
@@ -50,3 +118,7 @@
   position: absolute
 }
 
+/* daily informations*/
+.countryDailyInformations {
+  text-align: left;
+}
