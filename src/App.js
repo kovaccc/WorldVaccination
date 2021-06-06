@@ -6,7 +6,7 @@ import DailyInformations from './components/DailyInformations'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import * as Constants from './utils/Constants';
-import { count } from "d3-array";
+import BarChart from "./components/BarChart";
 
 
 function App() {
@@ -38,7 +38,6 @@ function App() {
     vaccinationData = data;
     vaccinationDataHeaders = vaccinationData[0].data;
 
-    // console.log("data is ", vaccinationData); // access first element in first row 
   }
 
 
@@ -52,6 +51,7 @@ function App() {
           <DatePicker selected={currentDate} onChange={(date) => setStartDate(date)} className="date-picker col-8 mt-5"/>
         </div>
         <DailyInformations countryData={currentCountryData} currentDate={currentDate}> </DailyInformations>
+        <BarChart countryData={currentCountryData}> </BarChart> 
       </div>
     </div>
   );
