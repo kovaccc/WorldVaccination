@@ -1,13 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 
-/* .appContent {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 20px;
-} */
-
-
 /* app text */
 
 body {
@@ -18,6 +11,7 @@ body {
   line-height: 20px;
   letter-spacing: 0.5px;
 }
+
 
 h1 {
   font-family: Roboto, sans-serif;
@@ -40,10 +34,7 @@ h2 {
 }
 
 
-
-
 /* date-picker */
-
 
 .date-picker {
   cursor: pointer;
@@ -75,10 +66,6 @@ h2 {
   text-align: center;
   letter-spacing: 0.5px;
 }
-
-
-
-
 
 
 
@@ -162,5 +149,5 @@ h2 {
 #chart {
   background: #fff;
   width: 100%;
-  margin: 1em auto;
+  margin: 1rem auto;
 }

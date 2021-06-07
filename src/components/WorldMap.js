@@ -45,7 +45,7 @@ const Map = ({ parentSelectedCountryCallback }) => {
                     parentSelectedCountryCallback(countryNames[d.id], true);
                 else
                     parentSelectedCountryCallback(countryNames[d.id], false);
-            }); // only if zoomed call parent callback 
+            }); 
 
         g.transition()
             .duration(750)
@@ -77,8 +77,6 @@ const Map = ({ parentSelectedCountryCallback }) => {
 
             var countries = topojson.feature(world, world.objects.countries).features;
 
-            // neighbors = topojson.neighbors(world.objects.countries.geometries);
-
             //map country names to IDs used on map
             names.forEach(function (i) {
                 countryNames[i.id] = i.name;
@@ -92,7 +90,6 @@ const Map = ({ parentSelectedCountryCallback }) => {
                 .attr("d", path)
                 .attr("id", function (d) { return d.id; })
                 .on('click', function (e, d) {
-                    // console.log(countryNames[d.id]);
                     clicked(d);
                 }).on("mouseover", function (e, d) {
                     d3.select(this).attr("fill", "grey").attr("stroke-width", 2);

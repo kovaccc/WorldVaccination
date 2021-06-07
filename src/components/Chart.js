@@ -3,18 +3,19 @@ import c3 from "c3";
 import * as Constants from '../utils/Constants';
 import 'c3/c3.css';
 import dateFormat from "dateformat";
-const BarChart = ({ countryData }) => {
+
+const Chart = ({ countryData }) => {
 
     if (countryData !== undefined) {
 
-        var filteredCountryData = countryData // get only country data where parameters below are relevant 
+        var filteredCountryData = countryData // get only country data where parameters below exists
             .filter(data =>
-                data[Constants.TOTAL_VACCINATIONS_INDEX] != "" &&
-                data[Constants.TOTAL_VACCINATIONS_INDEX] != undefined &&
-                data[Constants.PEOPLE_VACCINATED_INDEX] != "" &&
-                data[Constants.PEOPLE_VACCINATED_INDEX] != undefined &&
-                data[Constants.PEOPLE_FULLY_VACCINATED_INDEX] != "" &&
-                data[Constants.PEOPLE_FULLY_VACCINATED_INDEX] != undefined
+                data[Constants.TOTAL_VACCINATIONS_INDEX] !== "" &&
+                data[Constants.TOTAL_VACCINATIONS_INDEX] !== undefined &&
+                data[Constants.PEOPLE_VACCINATED_INDEX] !== "" &&
+                data[Constants.PEOPLE_VACCINATED_INDEX] !== undefined &&
+                data[Constants.PEOPLE_FULLY_VACCINATED_INDEX] !== "" &&
+                data[Constants.PEOPLE_FULLY_VACCINATED_INDEX] !== undefined
             )
 
         var dates = filteredCountryData.map(countryData => countryData[Constants.DATE_COLUMN_INDEX])
@@ -33,13 +34,11 @@ const BarChart = ({ countryData }) => {
         peopleVaccinated = ["People vaccinated"].concat(peopleVaccinated)
         peopleFullyVaccinated = ["People fully vaccinated"].concat(peopleFullyVaccinated)
         var datesData = ["x"].concat(dates)
-    
-
     }
 
     React.useEffect(() => {
         if (countryData !== undefined) {
-            var chart = c3.generate({
+            c3.generate({
                 size: {
                     height: 600
                 },
@@ -64,9 +63,9 @@ const BarChart = ({ countryData }) => {
                             position: 'outer-center'
                         },
                         type: 'timeseries',
-                        tick: {       
-                            format: function(x) {return dateFormat(x, "dd/mm/yyyy");},
-                            fit: true,          
+                        tick: {
+                            format: function (x) { return dateFormat(x, "dd/mm/yyyy"); },
+                            fit: true,
                             values: dates,
                             rotate: 75,
                             multiline: false
@@ -78,7 +77,7 @@ const BarChart = ({ countryData }) => {
                             text: 'Number of people',
                             position: 'outer-center'
                         },
-                        padding: {top: 100, bottom: 100}
+                        padding: { top: 100, bottom: 100 }
                     }
                 }
             });
@@ -87,9 +86,9 @@ const BarChart = ({ countryData }) => {
     }, [countryData]);
 
     return (
-        <div className="row" id="chart" />
+        <div className="pt-5 row" id="chart" />
     );
 
 };
 
-export default BarChart;
+export default Chart;

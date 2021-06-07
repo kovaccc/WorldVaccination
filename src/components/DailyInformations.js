@@ -7,12 +7,12 @@ const DailyInformations = ({ countryData, currentDate }) => {
 
     var filteredCountryData = new Array(15).fill(" ");
 
-    if (countryData === undefined || countryData.length == 0) {
+    if (countryData === undefined || countryData.length === 0) {
         filteredCountryData = new Array(15).fill(" ")
     }
     else {
-        filteredCountryData = countryData.find((data) => data[Constants.DATE_COLUMN_INDEX] == formatedDate) // find first that matches date 
-        if (filteredCountryData === undefined || filteredCountryData.length == 0) {
+        filteredCountryData = countryData.find((data) => data[Constants.DATE_COLUMN_INDEX] === formatedDate) // find first that matches date 
+        if (filteredCountryData === undefined || filteredCountryData.length === 0) {
             filteredCountryData = new Array(15).fill("")
         }
     }

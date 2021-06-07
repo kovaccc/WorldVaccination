@@ -1,9 +1,8 @@
-import csvFile from '../country_vaccinations.csv'
-import { readString } from 'react-papaparse';
-import React, { Component, useRef, useEffect, useState } from "react";
+import csvFile from '../data/country_vaccinations.csv'
+import React, { useEffect } from "react";
 import Papa from 'papaparse/papaparse.min';
 
-const VaccinationData = ({parentCountryDataCallback}) => {
+const VaccinationData = ({ parentCountryDataCallback }) => {
 
     useEffect(() => {
 
