@@ -44,8 +44,8 @@ function App() {
         <WorldMap parentSelectedCountryCallback={handleCountrySelectedCallback}></WorldMap>
         <VaccinationData parentCountryDataCallback={handleCountryDataCallback}></VaccinationData>
         <div className="row justify-content-center">
-          <h1 className="col-4 mt-5"> Pick a date</h1>
-          <DatePicker selected={currentDate} onChange={(date) => setStartDate(date)} className="date-picker col-8 mt-5" />
+          <h1 className="col-6 mt-5"> Pick a date</h1>
+          <DatePicker selected={currentDate} onChange={(date) => setStartDate(date)} className="date-picker col-6 mt-5" />
         </div>
         <DailyInformations countryData={currentCountryData} currentDate={currentDate}> </DailyInformations>
         <Chart countryData={currentCountryData}> </Chart>
