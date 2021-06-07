@@ -112,7 +112,6 @@ const Map = ({ parentSelectedCountryCallback }) => {
                 .attr("d", path);
 
 
-
         }).catch(err => console.log('Error loading or parsing data.'))
 
     }, []);
