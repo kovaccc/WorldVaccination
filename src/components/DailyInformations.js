@@ -24,7 +24,7 @@ const DailyInformations = ({ countryData, currentDate }) => {
 
     return (
         <div className="row mt-5 countryDailyInformations">
-            <h2 className="col-5 ml-3 mb-4">Daily information</h2>
+            <h2 className="col-6 ml-3 mb-4">Daily information</h2>
             <div className="col-12 daily-informations-preview">
                 <p> <span style={{fontWeight: "bold"}}> {Constants.COUNTRY_NAME_COLUMN}</span>{filteredCountryData[Constants.COUNTRY_NAME_COLUMN_INDEX] ? filteredCountryData[Constants.COUNTRY_NAME_COLUMN_INDEX] : noDataAavailableString()} </p>
                 <p> <span style={{fontWeight: "bold"}}> {Constants.ISO_CODE_COLUMN}</span> {filteredCountryData[Constants.ISO_CODE_COLUMN_INDEX] ? filteredCountryData[Constants.ISO_CODE_COLUMN_INDEX] : noDataAavailableString()} </p>
