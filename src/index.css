@@ -83,7 +83,7 @@ h2 {
 }
 
 .country {
-  fill: #aaa;
+  fill: red;
 }
 
 .country .active {

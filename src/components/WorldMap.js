@@ -2,21 +2,53 @@ import React, { Component, useRef, useEffect, useState } from "react";
 import { select, geoPath, geoMercator, min, max, scaleLinear } from "d3";
 import * as d3 from "d3";
 import * as topojson from "topojson";
+import dateFormat from "dateformat";
+import * as Constants from '../utils/Constants';
 
-const Map = ({ parentSelectedCountryCallback }) => {
+const Map = ({ parentSelectedCountryCallback, currentDate, currentVaccinationData }) => {
 
     const svgRef = useRef();
     const tooltipRef = useRef();
     var countryNames = [];
+    var countriesForDateData;
 
     const width = 1000;
     const height = 900;
     var centered;
 
-    const projection = d3.geoMercator().scale(150)
+    var projection = d3.geoMercator().scale(150)
         .translate([width / 2, height / 2]);
 
-    const path = d3.geoPath(projection);
+    var path = d3.geoPath(projection);
+
+    var opacityCountries = d3.scaleLinear().domain([0, 100]).range([0.55, 1])
+
+    var formatedDate = dateFormat(currentDate, "yyyy-mm-dd");
+
+
+    function getCountryOpacity(d) {
+
+        if (countriesForDateData === undefined || countriesForDateData.length == 0 || d === undefined) {
+
+        } else {
+
+            let value = countriesForDateData.filter(country =>
+                d.toLowerCase()
+                    .replace(/ /g, "")
+                    .includes(country.data[Constants.COUNTRY_NAME_COLUMN_INDEX].toLowerCase().replace(/ /g, ""))).map(it => it.data); // country data 
+
+            if (value === undefined || value.length == 0 || value == false) {
+
+            } else {
+                let finalArrayData = value[0] // get first or only element that are matching name 
+                let opacityValue = Math.round(finalArrayData[Constants.TOTAL_VACCIONATIONS_PER_HUNDRED_INDEX])
+
+                if (opacityValue === 0 || opacityValue === undefined) { } else { return opacityCountries(opacityValue) }
+            }
+        }
+
+        return 0.2; // if no data presented for total vaccinations 
+    }
 
     function clicked(d) {
         var x, y, k;
@@ -43,9 +75,10 @@ const Map = ({ parentSelectedCountryCallback }) => {
             .call(function (e) {
                 if (centered && function (d) { return d === centered; })
                     parentSelectedCountryCallback(countryNames[d.id], true);
-                else
+                else {
                     parentSelectedCountryCallback(countryNames[d.id], false);
-            }); 
+                }
+            });
 
         g.transition()
             .duration(750)
@@ -55,8 +88,16 @@ const Map = ({ parentSelectedCountryCallback }) => {
 
     }
 
-
     useEffect(() => {
+
+        d3.selectAll("svg > *").remove(); // clear svg to draw new one 
+
+
+        if (currentVaccinationData !== undefined) {
+            countriesForDateData = currentVaccinationData.filter((rawData) =>
+                formatedDate == rawData.data[Constants.DATE_COLUMN_INDEX]);
+        } // get data of all countries for current selected date
+
 
         var svg = select(svgRef.current);
         var tooltip = select(tooltipRef.current);
@@ -82,6 +123,7 @@ const Map = ({ parentSelectedCountryCallback }) => {
                 countryNames[i.id] = i.name;
             });
 
+
             g.append("g")
                 .attr("class", "country")
                 .selectAll(".country")
@@ -89,10 +131,11 @@ const Map = ({ parentSelectedCountryCallback }) => {
                 .enter().append('path')
                 .attr("d", path)
                 .attr("id", function (d) { return d.id; })
+                .style("opacity", function (d) { return getCountryOpacity(countryNames[d.id]) })
                 .on('click', function (e, d) {
                     clicked(d);
                 }).on("mouseover", function (e, d) {
-                    d3.select(this).attr("fill", "grey").attr("stroke-width", 2);
+                    d3.select(this).attr("fill", "grey").attr("stroke-width", 2)
                     return tooltip.classed("hidden", false).html(countryNames[d.id]);
                 })
                 .on("mousemove", function (e, d) {
@@ -101,8 +144,8 @@ const Map = ({ parentSelectedCountryCallback }) => {
                         .style("left", (e.x + 10) + "px")
                         .html(countryNames[d.id]);
                 })
-                .on("mouseout", function (d, i) {
-                    d3.select(this).attr("fill", "#aaa").attr("stroke-width", 1);
+                .on("mouseout", function (e, d) {
+                    d3.select(this).attr("fill", "red").attr("stroke-width", 1)
                     tooltip.classed("hidden", true);
                 });
 
@@ -114,7 +157,7 @@ const Map = ({ parentSelectedCountryCallback }) => {
 
         }).catch(err => console.log('Error loading or parsing data.'))
 
-    }, []);
+    }, [currentDate, currentVaccinationData]);
 
     return (
         <div className="mapContainer">

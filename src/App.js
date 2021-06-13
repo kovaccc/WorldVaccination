@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import WorldMap from './components/WorldMap';
 import VaccinationData from './components/VaccinationData'
@@ -13,10 +13,10 @@ function App() {
 
   const [currentDate, setStartDate] = useState(new Date());
   const [currentCountryData, setCountryData] = useState();
+  const [currentVaccinationData, setVaccinationData] = useState();
   var selectedCountry;
-  var vaccinationData = []
 
-  const handleCountrySelectedCallback = (country, isSelected) => {
+  async function handleCountrySelectedCallback (country, isSelected) {
     selectedCountry = country;
 
     if (selectedCountry === undefined || isSelected === false) {
@@ -24,7 +24,7 @@ function App() {
 
     } else {
 
-      var countryData = vaccinationData.filter((rawData) => selectedCountry
+      var countryData = currentVaccinationData.filter((rawData) => selectedCountry
         .toLowerCase()
         .replace(/ /g, "")
         .includes(rawData.data[Constants.COUNTRY_NAME_COLUMN_INDEX].toLowerCase().replace(/ /g, ""))).map(it => it.data);
@@ -33,19 +33,24 @@ function App() {
     }
   }
 
-  const handleCountryDataCallback = (data) => {
-    vaccinationData = data;
+
+  async function handleCountryDataCallback (data) {
+    setVaccinationData(data)
   }
 
+  const updateDate = (date)=> {
+    setStartDate(date);
+    setCountryData([]);
+  };
 
   return (
     <div className="App p-3">
       <div className="appContent">
-        <WorldMap parentSelectedCountryCallback={handleCountrySelectedCallback}></WorldMap>
+        <WorldMap parentSelectedCountryCallback={handleCountrySelectedCallback} currentDate={currentDate} currentVaccinationData={currentVaccinationData}></WorldMap>
         <VaccinationData parentCountryDataCallback={handleCountryDataCallback}></VaccinationData>
         <div className="row justify-content-center">
           <h1 className="col-6 mt-5"> Pick a date</h1>
-          <DatePicker selected={currentDate} onChange={(date) => setStartDate(date)} className="date-picker col-6 mt-5" />
+          <DatePicker selected={currentDate} onChange={(date) => updateDate(date)} className="date-picker col-6 mt-5" />
         </div>
         <DailyInformations countryData={currentCountryData} currentDate={currentDate}> </DailyInformations>
         <Chart countryData={currentCountryData}> </Chart>
