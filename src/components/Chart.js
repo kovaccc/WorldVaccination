@@ -38,7 +38,7 @@ const Chart = ({ countryData }) => {
 
     React.useEffect(() => {
         if (countryData !== undefined) {
-            c3.generate({
+            c3.generate({ // https://c3js.org/examples.html
                 size: {
                     height: 600
                 },

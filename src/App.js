@@ -42,14 +42,14 @@ function App() {
     setStartDate(date);
     setCountryData([]);
   };
-
+ // https://getbootstrap.com/docs/4.0/layout/grid/ 
   return (
     <div className="App p-3">
       <div className="appContent">
         <WorldMap parentSelectedCountryCallback={handleCountrySelectedCallback} currentDate={currentDate} currentVaccinationData={currentVaccinationData}></WorldMap>
         <VaccinationData parentCountryDataCallback={handleCountryDataCallback}></VaccinationData>
         <div className="row justify-content-center">
-          <h1 className="col-6 mt-5"> Pick a date</h1>
+          <h1 className="col-6 mt-5"> Pick a date</h1> 
           <DatePicker selected={currentDate} onChange={(date) => updateDate(date)} className="date-picker col-6 mt-5" />
         </div>
         <DailyInformations countryData={currentCountryData} currentDate={currentDate}> </DailyInformations>

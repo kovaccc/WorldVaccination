@@ -8,7 +8,7 @@ const VaccinationData = ({ parentCountryDataCallback }) => {
 
         var vaccinationData = [];
 
-        Papa.parse(csvFile, {
+        Papa.parse(csvFile, { // https://www.kaggle.com/gpreda/covid-world-vaccination-progress  
             download: true,
             step: function (row) {
                 vaccinationData.push(row)

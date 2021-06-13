@@ -50,7 +50,7 @@ const Map = ({ parentSelectedCountryCallback, currentDate, currentVaccinationDat
         return 0.2; // if no data presented for total vaccinations 
     }
 
-    function clicked(d) {
+    function clicked(d) { //https://bl.ocks.org/mbostock/2206590
         var x, y, k;
 
         var svg = select(svgRef.current);
@@ -88,7 +88,7 @@ const Map = ({ parentSelectedCountryCallback, currentDate, currentVaccinationDat
 
     }
 
-    useEffect(() => {
+    useEffect(() => { // https://reactjs.org/docs/hooks-intro.html 
 
         d3.selectAll("svg > *").remove(); // clear svg to draw new one 
 
@@ -136,7 +136,7 @@ const Map = ({ parentSelectedCountryCallback, currentDate, currentVaccinationDat
                     clicked(d);
                 }).on("mouseover", function (e, d) {
                     d3.select(this).attr("fill", "grey").attr("stroke-width", 2)
-                    return tooltip.classed("hidden", false).html(countryNames[d.id]);
+                    return tooltip.classed("hidden", false).html(countryNames[d.id]); // https://blockbuilder.org/abrahamdu/50147e692857054c2bf88c443946e8a5
                 })
                 .on("mousemove", function (e, d) {
                     tooltip.classed("hidden", false)
